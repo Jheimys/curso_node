@@ -1,9 +1,35 @@
+/*
+    - npm install bcrypt --> biblioteca para criptografar senhas
+*/
+
 const express = require('express')
 const res = require('express/lib/response')
 const path = require('path')
 
 
+
+const db = require('./database')
+const routes = require('./routes')
+
+
+
 const app = express()
+
+
+
+//conexão com o banco de dados
+db.connect()
+
+/*
+const register = new Model({
+    name:'Thiago',
+    age: 35,
+    email: 'thiago@email.com',
+    password: '123456',
+})
+
+register.save()
+*/
 
 //Definindo o template engine
 app.set('view engine', 'ejs')
@@ -16,12 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 //Habilitar server para receber dados via post (fomulários)
 app.use(express.urlencoded({extended: true})) 
 
-//Rotas
-app.get('/', (req, res) =>{
-    res.render('index',{
-        title:'Titulo teste'
-    })
-})
+//definindo as rotas
+app.use('/', routes)
 
 //404 error (not found)
 app.use((req, res) => {

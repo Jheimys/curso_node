@@ -28,13 +28,102 @@ esse comando irá procurar pela pasta view que está na raiz do programa, como a
 app.set("views", path.join(__dirname, "views"));
 ```
 
-_Obs 3: Para importar um arquivo sauando o ejs usamos:_
+_Obs 3: Para importar um arquivos usando o ejs usamos:_
 
 ```js
 <%- include('nomeDaPasta/arquivo.ejs')>
 ```
 
-# 2. Conectando com o MongoDB
+# 2. Conectando com o MongoDB.
+
+Uma boa prática é criar uma pasta separada para tudo que for relcionado ao banco de dados, então dentro da pasta SRC criamos a pata _database_ com o arquivo _index.js_
+
+```js
+const mongoose = require("mongoose");
+
+function connect() {
+  mongoose.connetc("end do bd");
+
+  const db = mongoose.connection;
+
+  db.once("open", () => {
+    console.log("connected to database!");
+  });
+
+  db.on("error", console.error.bind(console, "connection error:"));
+}
+
+module.export = { connect };
+```
+
+Agora temos que importar para o _sever.js_
+
+```js
+const db = require("./database");
+
+db.connect();
+```
+
+# 3. Estruturas de rotas
+
+Uma boa prática é tirar as rotas do servidor e dentro da pasta SRC criamos a pasta _routes_ com o arquivo _index.js_
+
+_Obs: na pasta routes não podemos usar o app, então vamos usar o método Router._
+
+```js
+const router = require("express").Router();
+
+router.get("/", (req, res) => {
+  res.render("index", {
+    title: "Titulo teste",
+  });
+});
+
+module.exports = router;
+```
+
+Agora devemos importar para o server.
+
+```js
+const routes = require("./routes");
+
+app.use("/", routes);
+```
+
+# Document Schema (Model)
+
+```js
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema({
+  name: string,
+  age: number,
+  email: string,
+  password: string,
+});
+
+//criando collection
+const Model = mongoose.model("customers", schema);
+```
+
+Agora devemos informar em qual bd queremos criar essa tabela. Na pasta de database em _mongoose.connect_ passamos o nome do bd _(projeto-crud)_ que vamos criar essa tabela
+
+```js
+mongoose.connect("mongodb:/localhost:27017/projeto-crud");
+```
+
+Para que o bd seja criado devemos iserir alguns registros
+
+```js
+const register = new Model({
+  name:'Fulano',
+  age: 35,
+  email: 'fulano@email'
+  password: '123456'
+})
+
+register.save()
+```
 
 # 1. Criptografar senhas
 

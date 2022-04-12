@@ -5,6 +5,11 @@
 
 <body>
     <h1><%= title %></h1>
+    <%- include('partials/navbar.ejs')  %> 
+
+    <% if(typeof message !== 'undefined'){%>
+       <%= message  %>  
+     <% } %> 
 
     <form action="/register/add" method="POST">
         <div>

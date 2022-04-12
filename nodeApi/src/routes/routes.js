@@ -2,7 +2,7 @@
 const router = require('express').Router()
 const ProductsControllers = require('../controllers/products')
 
-
-router.get('/products', ProductsControllers.get)
+// ? --> faz com que o id seja opcional na rota
+router.get('/products/:id?', ProductsControllers.get)
 
 module.exports = router

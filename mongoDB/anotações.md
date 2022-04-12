@@ -90,7 +90,7 @@ const routes = require("./routes");
 app.use("/", routes);
 ```
 
-# Document Schema (Model)
+# 4. Document Schema (Model)
 
 ```js
 const mongoose = require("mongoose");
@@ -125,7 +125,30 @@ const register = new Model({
 register.save()
 ```
 
-# 1. Criptografar senhas
+Claro queremos que isso funciona apenas quando o formulário seja preenchido, então criamos a pasta _models_ e o _index.js_ onde vamos colocar:
+
+```js
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema({
+  name: string,
+  age: number,
+  email: string,
+  password: string,
+});
+
+const Model = mongoose.model("customers", schema);
+
+module.expots = Model;
+```
+
+# 5.Controllers + Cadastrar Cliente
+
+Nessa seção dentro da pasta _views_ criamos o araquivo _regiter.ejs_ e fizemos um formulário com name, age, email e password e dentro da pasta de _routes_ criamos a rota _register_.
+
+_Obs Na pasta routes temos o método get para receber o fomuláro e na pasta de controllers o método Post para enviar o formulário para o bd._
+
+# 6. Criptografar senhas
 
 1° passo instalar e importar a biblioteca para criptografar senhas.
 
@@ -147,4 +170,4 @@ async function gerarSenha() {
 gerarSenha();
 ```
 
-# 2. Listar clientes
+# 7. Listar clientes

@@ -1,5 +1,6 @@
 
 const express = require('express')
+const cors = require('cors')
 //const res = require('express/lib/response')
 //const path = require('path')
 
@@ -11,6 +12,9 @@ const routes = require('./routes/routes')
 
 
 const app = express()
+
+//habilitar CORS
+app.use(cors())
 
 
 
